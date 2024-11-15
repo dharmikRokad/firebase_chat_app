@@ -1,6 +1,5 @@
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
@@ -25,15 +24,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Theme.of(context).textTheme.headlineMedium?.color
-            : Colors.black,
-        child: Center(
-          child: Text(
-            "Chat App",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+      body: Center(
+        child: Text(
+          "Chat App",
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       floatingActionButton: const Text(
