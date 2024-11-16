@@ -10,6 +10,7 @@ class AppButton extends StatelessWidget {
     this.suffix,
     this.prefixSpace = 20,
     this.suffixSpace = 20,
+    this.isLoading = false,
   });
 
   final VoidCallback onPressed;
@@ -18,6 +19,7 @@ class AppButton extends StatelessWidget {
   final Widget? suffix;
   final int prefixSpace;
   final int suffixSpace;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -31,27 +33,29 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          10.h.horizontalSpace,
-          if (prefix != null) ...[
-            prefix!,
-            prefixSpace.h.horizontalSpace,
-          ],
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.apply(
-                fontWeightDelta: 2,
-                color: Theme.of(context).colorScheme.onSurface),
-          ),
-          if (suffix != null) ...[
-            suffixSpace.h.horizontalSpace,
-            suffix!,
-          ],
-          10.h.horizontalSpace,
-        ],
-      ),
+      child: isLoading
+          ? const CircularProgressIndicator()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                10.h.horizontalSpace,
+                if (prefix != null) ...[
+                  prefix!,
+                  prefixSpace.h.horizontalSpace,
+                ],
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.apply(
+                      fontWeightDelta: 2,
+                      color: Theme.of(context).colorScheme.onSurface),
+                ),
+                if (suffix != null) ...[
+                  suffixSpace.h.horizontalSpace,
+                  suffix!,
+                ],
+                10.h.horizontalSpace,
+              ],
+            ),
     );
   }
 }

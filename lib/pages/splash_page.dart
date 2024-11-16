@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -43,14 +46,23 @@ class _SplashPageState extends State<SplashPage> {
 
   startTimer() {
     var duration = const Duration(milliseconds: 2000);
-    return Future.delayed(duration, () {
-      // context.goNamed(AppRoute.createPostScreen.name, extra: PostType.blog);
-      if (!mounted) return;
-      if (2 == 1) {
-        context.goNamed(RouteNames.homePage.name);
-      } else {
-        context.goNamed(RouteNames.loginPage.name);
-      }
-    });
+    return Future.delayed(
+      duration,
+      () {
+        AuthService().authStateChanges().listen(
+          (user) {
+            if (user == null) {
+              log('not any logged in user.');
+              if (!mounted) return;
+              context.goNamed(RouteNames.loginPage.name);
+            } else {
+              log('found the logged in user - ${user.email}');
+              if (!mounted) return;
+              context.goNamed(RouteNames.homePage.name);
+            }
+          },
+        );
+      },
+    );
   }
 }
