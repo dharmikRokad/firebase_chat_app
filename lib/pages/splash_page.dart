@@ -1,9 +1,9 @@
 import 'dart:developer';
-
-import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:chat_app/providers/auth_provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -49,8 +49,9 @@ class _SplashPageState extends State<SplashPage> {
     return Future.delayed(
       duration,
       () {
-        AuthService().authStateChanges().listen(
-          (user) {
+        if (!mounted) return;
+        context.read<AuthenticationProvider>().authStateChanges().listen(
+          (user) async {
             if (user == null) {
               log('not any logged in user.');
               if (!mounted) return;
@@ -58,7 +59,13 @@ class _SplashPageState extends State<SplashPage> {
             } else {
               log('found the logged in user - ${user.email}');
               if (!mounted) return;
-              context.goNamed(RouteNames.homePage.name);
+              context.goNamed(
+                await context
+                        .read<AuthenticationProvider>()
+                        .isObBoarded(user.uid)
+                    ? RouteNames.homePage.name
+                    : RouteNames.setupProfilePage.name,
+              );
             }
           },
         );

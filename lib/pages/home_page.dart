@@ -1,4 +1,3 @@
-import 'package:chat_app/pages/login_page.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: const Column(),
+      body: ListView(),
     );
   }
 }

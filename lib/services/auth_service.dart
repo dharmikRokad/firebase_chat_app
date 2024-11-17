@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -13,18 +11,13 @@ class AuthService {
 
   Future<User?> signIn(
       {required String email, required String password}) async {
-    try {
+    
       final userCred = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       return userCred.user;
-    } on FirebaseAuthException catch (_) {
-      rethrow;
-    } catch (e) {
-      log('error while sign in => $e');
-      return null;
-    }
+    
   }
 
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();

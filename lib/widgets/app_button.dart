@@ -26,17 +26,26 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(85.sw, 45.h),
+        fixedSize: Size(85.sw, 50.h),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5.r),
         ),
       ),
       child: isLoading
-          ? const CircularProgressIndicator()
+          ? SizedBox(
+              height: 30.r,
+              width: 30.r,
+              child: CircularProgressIndicator(
+                strokeCap: StrokeCap.round,
+                strokeWidth: 3,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 10.h.horizontalSpace,
                 if (prefix != null) ...[

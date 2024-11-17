@@ -1,6 +1,7 @@
 import 'package:chat_app/pages/chat_page.dart';
 import 'package:chat_app/pages/home_page.dart';
 import 'package:chat_app/pages/login_page.dart';
+import 'package:chat_app/pages/set_up_profile.dart';
 import 'package:chat_app/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:go_router/go_router.dart';
 enum RouteNames {
   splashPage,
   loginPage,
+  setupProfilePage,
   homePage,
   chatScreen,
 }
@@ -37,6 +39,11 @@ class AppRouter {
         path: RouteNames.loginPage.path,
         name: RouteNames.loginPage.name,
         builder: (context, state) => LoginPage(key: state.pageKey),
+      ),
+      GoRoute(
+        path: RouteNames.setupProfilePage.path,
+        name: RouteNames.setupProfilePage.name,
+        builder: (context, state) => SetUpProfileScreen(key: state.pageKey),
       ),
       GoRoute(
         path: RouteNames.homePage.path,
