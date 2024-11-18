@@ -51,18 +51,18 @@ class _SplashPageState extends State<SplashPage> {
       () {
         if (!mounted) return;
         context.read<AuthenticationProvider>().authStateChanges().listen(
-          (user) async {
-            if (user == null) {
+          (authState) async {
+            if (authState?.session == null) {
               log('not any logged in user.');
               if (!mounted) return;
               context.goNamed(RouteNames.loginPage.name);
             } else {
-              log('found the logged in user - ${user.email}');
+              log('found the logged in user - ${authState?.session?.user.email}');
               if (!mounted) return;
               context.goNamed(
                 await context
                         .read<AuthenticationProvider>()
-                        .isObBoarded(user.uid)
+                        .isObBoarded(authState?.session?.user.id ?? '')
                     ? RouteNames.homePage.name
                     : RouteNames.setupProfilePage.name,
               );

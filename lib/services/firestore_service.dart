@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FirestoreService {
   FirestoreService._();
@@ -7,27 +7,27 @@ class FirestoreService {
 
   factory FirestoreService() => _instance;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _usersTable = Supabase.instance.client.from('users');
 
-  Future<void> addUSer({
+  Future<void> addUser({
     required String uid,
     required String email,
     Map<String, dynamic> data = const {},
   }) async {
-    await _firestore.collection('users').doc(uid).set({
-      'uid': uid,
+    await _usersTable.insert({
+      'id': uid,
       'email': email,
       ...data,
     });
   }
 
   Future<bool> isUserOnBoarded({required String uid}) async {
-    final doc = await _firestore.collection('users').doc(uid).get();
-    return doc.exists;
+    final doc = await _usersTable.select().eq('id', uid).single();
+    return doc.isNotEmpty;
   }
 
   Stream<List<Map<String, dynamic>>> getUsers() {
-    return _firestore.collection('users').snapshots().map((snapshot) {
+    return _usersTable.asStream().map((snapshot) {
       return snapshot.docs.map((e) => e.data()).toList();
     });
   }

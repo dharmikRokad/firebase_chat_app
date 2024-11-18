@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   AuthService._();
@@ -7,20 +7,18 @@ class AuthService {
 
   factory AuthService() => _instance;
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoTrueClient   _supabaseAuth = Supabase.instance.client.auth;
 
   Future<User?> signIn(
       {required String email, required String password}) async {
-    
-      final userCred = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return userCred.user;
-    
+    final userCred = await _supabaseAuth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    return userCred.user;
   }
 
-  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+  Stream<AuthState?> authStateChanges() => _supabaseAuth.onAuthStateChange;
 
-  Future<void> signOut() async => await _firebaseAuth.signOut();
+  Future<void> signOut() async => await _supabaseAuth.signOut();
 }

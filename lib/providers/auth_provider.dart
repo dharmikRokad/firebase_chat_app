@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/services/firestore_service.dart';
 import 'package:chat_app/utils/strings.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final AuthService authService;
@@ -22,9 +25,17 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<bool> isObBoarded(String uid) async {
-    _isOnboarded = await firestoreService.isUserOnBoarded(uid: uid);
-    if (_isOnboarded) notifyListeners();
-    return _isOnboarded;
+    try {
+      _isOnboarded = await firestoreService.isUserOnBoarded(uid: uid);
+      if (_isOnboarded) notifyListeners();
+      return _isOnboarded;
+    } on PostgrestException catch (e) {
+      log('Error while checking if user is onboarded: $e');
+      return false;
+    } catch (e) {
+      log('Error while checking if user is onboarded: $e');
+      return false;
+    }
   }
 
   Future<void> signIn(
@@ -36,10 +47,12 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       changeLoading(true);
       final user = await authService.signIn(email: email, password: password);
-      onSuccess?.call(user?.uid ?? '');
-    } on FirebaseAuthException catch (e) {
-      onFailure?.call(e.message ?? '');
+      onSuccess?.call(user?.id ?? '');
+    } on AuthException catch (e) {
+      log(e.toString());
+      onFailure?.call(e.message);
     } catch (e) {
+      log(e.toString());
       onFailure?.call(Strings.somethingWrong);
     } finally {
       changeLoading(false);
@@ -54,14 +67,16 @@ class AuthenticationProvider extends ChangeNotifier {
       changeLoading(true);
       await authService.signOut();
       onSuccess?.call(Strings.loggedOut);
-    } on FirebaseAuthException catch (e) {
-      onFailure?.call(e.code);
+    } on AuthException catch (e) {
+      log(e.toString());
+      onFailure?.call(e.message);
     } catch (e) {
+      log(e.toString());
       onFailure?.call(Strings.somethingWrong);
     } finally {
       changeLoading(false);
     }
   }
 
-  Stream<User?> authStateChanges() => authService.authStateChanges();
+  Stream<AuthState?> authStateChanges() => authService.authStateChanges();
 }
