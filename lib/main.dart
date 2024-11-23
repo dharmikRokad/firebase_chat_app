@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:chat_app/providers/auth_provider.dart';
-import 'package:chat_app/services/auth_service.dart';
-import 'package:chat_app/services/firestore_service.dart';
+import 'package:chat_app/services/supa_auth_service.dart';
+import 'package:chat_app/services/supa_database_service.dart';
+import 'package:chat_app/services/supa_storage_service.dart';
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,8 +29,9 @@ class MyApp extends StatelessWidget {
         // Auth provider
         ChangeNotifierProvider(
           create: (_) => AuthenticationProvider(
-            AuthService(),
-            FirestoreService(),
+            SupaAuthService(),
+            SupaDataBaseService(),
+            SupaStorageService(),
           ),
         ),
       ],

@@ -1,4 +1,4 @@
-import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/services/supa_auth_service.dart';
 import 'package:chat_app/utils/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             onPressed: () async {
-              await AuthService().signOut();
+              await SupaAuthService().signOut();
               if (!context.mounted) return;
               context.goNamed(RouteNames.loginPage.name);
             },

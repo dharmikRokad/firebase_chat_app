@@ -1,13 +1,13 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AuthService {
-  AuthService._();
+class SupaAuthService {
+  SupaAuthService._();
 
-  static final AuthService _instance = AuthService._();
+  static final SupaAuthService _instance = SupaAuthService._();
 
-  factory AuthService() => _instance;
+  factory SupaAuthService() => _instance;
 
-  final GoTrueClient   _supabaseAuth = Supabase.instance.client.auth;
+  final GoTrueClient _supabaseAuth = Supabase.instance.client.auth;
 
   Future<User?> signIn(
       {required String email, required String password}) async {

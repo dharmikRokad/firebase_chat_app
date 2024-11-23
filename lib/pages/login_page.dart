@@ -17,14 +17,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'login_form');
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
 
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passFocusNode = FocusNode();
-
-  final ValueNotifier<bool> isLoading = ValueNotifier(false);
+  final FocusNode _emailNode = FocusNode(debugLabel: '_emailNode');
+  final FocusNode _passNode = FocusNode(debugLabel: '_passNode');
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +54,10 @@ class _LoginPageState extends State<LoginPage> {
                 80.h.verticalSpace,
                 TextFormField(
                   controller: _emailController,
-                  focusNode: _emailFocusNode,
+                  focusNode: _emailNode,
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),
                   onFieldSubmitted: (_) =>
-                      FocusScope.of(context).requestFocus(_passFocusNode),
+                      FocusScope.of(context).requestFocus(_passNode),
                   decoration: const InputDecoration(
                     labelText: Strings.email,
                     hintText: Strings.emailHint,
@@ -78,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                 20.h.verticalSpace,
                 TextFormField(
                   controller: _passController,
-                  focusNode: _passFocusNode,
+                  focusNode: _passNode,
                   obscureText: true,
                   obscuringCharacter: '-',
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),

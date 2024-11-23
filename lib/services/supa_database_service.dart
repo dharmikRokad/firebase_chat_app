@@ -1,20 +1,20 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class FirestoreService {
-  FirestoreService._();
+class SupaDataBaseService {
+  SupaDataBaseService._();
 
-  static final FirestoreService _instance = FirestoreService._();
+  static final SupaDataBaseService _instance = SupaDataBaseService._();
 
-  factory FirestoreService() => _instance;
+  factory SupaDataBaseService() => _instance;
 
   final _usersTable = Supabase.instance.client.from('users');
 
-  Future<void> addUser({
+  Future<void> updateProfile({
     required String uid,
     required String email,
     Map<String, dynamic> data = const {},
   }) async {
-    await _usersTable.insert({
+    return await _usersTable.insert({
       'id': uid,
       'email': email,
       ...data,

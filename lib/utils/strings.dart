@@ -16,9 +16,21 @@ class Strings {
   static const String loggedOut = 'Logged out.';
   static const String somethingWrong =
       'Something went wrong. Please try again later.';
+  static const String profileUpdated = 'Profile updated successfully.';
 
   // seet up profile
   static const String setupProfile = 'Set up your profile';
-  static const String fullName = 'Full Name';
-  static const String fullNAmeHint = 'John Doe';
+  static const String fName = 'First Name';
+  static const String fNameHint = 'John';
+  static const String lName = 'Last Name';
+  static const String lNmaeHint = 'Doe';
+  static const String proffesion = 'Proffesion';
+  static const String proffesionHint = 'Buisness Administrtor';
+  static const String required = 'Required!';
+  static const String gender = 'Gender';
+  static const String male = 'Male';
+  static const String female = 'Female';
+  static const String other = 'Other';
+  static const String dateOfBirth = 'Date of Birth';
+  static const String dobHint = 'DD/MM/YYYY';
 }

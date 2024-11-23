@@ -1,23 +1,40 @@
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:chat_app/services/auth_service.dart';
-import 'package:chat_app/services/firestore_service.dart';
+import 'package:chat_app/services/supa_auth_service.dart';
+import 'package:chat_app/services/supa_database_service.dart';
+import 'package:chat_app/services/supa_storage_service.dart';
 import 'package:chat_app/utils/strings.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  final AuthService authService;
-  final FirestoreService firestoreService;
+  final SupaAuthService supaAuthService;
+  final SupaDataBaseService supaDatabaseService;
+  final SupaStorageService supaStorageService;
 
-  AuthenticationProvider(this.authService, this.firestoreService);
+  AuthenticationProvider(
+    this.supaAuthService,
+    this.supaDatabaseService,
+    this.supaStorageService,
+  );
 
   bool _isLoading = false;
   bool _isOnboarded = false;
+  User? _me;
+
+  XFile? _profilePic;
+  DateTime? _dob;
+  String? _gender;
 
   bool get isLaoding => _isLoading;
   bool get isOnBoarded => _isOnboarded;
+  User? get me => _me;
+
+  XFile? get profilePic => _profilePic;
+  DateTime? get dob => _dob;
+  String? get gender => _gender;
 
   void changeLoading(bool newValue) {
     _isLoading = newValue;
@@ -26,7 +43,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<bool> isObBoarded(String uid) async {
     try {
-      _isOnboarded = await firestoreService.isUserOnBoarded(uid: uid);
+      _isOnboarded = await supaDatabaseService.isUserOnBoarded(uid: uid);
       if (_isOnboarded) notifyListeners();
       return _isOnboarded;
     } on PostgrestException catch (e) {
@@ -38,6 +55,21 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  void setProfilePic(XFile? value) {
+    _profilePic = value;
+    notifyListeners();
+  }
+
+  void setDob(DateTime? value) {
+    _dob = value;
+    notifyListeners();
+  }
+
+  void setGender(String? value) {
+    _gender = value;
+    notifyListeners();
+  }
+
   Future<void> signIn(
     String email,
     String password, {
@@ -46,8 +78,8 @@ class AuthenticationProvider extends ChangeNotifier {
   }) async {
     try {
       changeLoading(true);
-      final user = await authService.signIn(email: email, password: password);
-      onSuccess?.call(user?.id ?? '');
+      _me = await supaAuthService.signIn(email: email, password: password);
+      onSuccess?.call(_me?.id ?? '');
     } on AuthException catch (e) {
       log(e.toString());
       onFailure?.call(e.message);
@@ -59,13 +91,58 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  Future<String> uploadProfilePick({
+    Function(String)? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      changeLoading(true);
+      return await supaStorageService.uploadProfilePic(
+          File(_profilePic?.path ?? ''), _me?.id ?? '');
+    } on StorageException catch (e) {
+      log('Error - uploading photo => ${e.message}');
+      onFailure?.call(e.message);
+      return '';
+    } catch (e) {
+      log('Error - uploading photo => {e.toString()');
+      onFailure?.call(Strings.somethingWrong);
+      return '';
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> updateProfile(
+    Map<String, dynamic> data, {
+    Function(String)? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      changeLoading(true);
+      await supaDatabaseService.updateProfile(
+        uid: _me?.id ?? '',
+        email: _me?.email ?? '',
+        data: data,
+      );
+      onSuccess?.call(Strings.profileUpdated);
+    } on PostgrestException catch (e) {
+      log('Error - update profile => ${e.message}');
+      onFailure?.call(e.message);
+    } on Exception catch (e) {
+      log('Error - update profile => ${e.toString()}');
+      onFailure?.call(Strings.somethingWrong);
+    } finally {
+      changeLoading(true);
+    }
+  }
+
   Future<void> signOut({
     Function(String)? onSuccess,
     Function(String)? onFailure,
   }) async {
     try {
       changeLoading(true);
-      await authService.signOut();
+      await supaAuthService.signOut();
       onSuccess?.call(Strings.loggedOut);
     } on AuthException catch (e) {
       log(e.toString());
@@ -78,5 +155,5 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-  Stream<AuthState?> authStateChanges() => authService.authStateChanges();
+  Stream<AuthState?> authStateChanges() => supaAuthService.authStateChanges();
 }
