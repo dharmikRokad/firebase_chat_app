@@ -59,6 +59,7 @@ class _SplashPageState extends State<SplashPage> {
             } else {
               log('found the logged in user - ${authState?.session?.user.email}');
               if (!mounted) return;
+              
               context.goNamed(
                 await context
                         .read<AuthenticationProvider>()

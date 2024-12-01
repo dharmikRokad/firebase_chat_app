@@ -21,4 +21,8 @@ class SupaAuthService {
   Stream<AuthState?> authStateChanges() => _supabaseAuth.onAuthStateChange;
 
   Future<void> signOut() async => await _supabaseAuth.signOut();
+
+  User? get getCurrentUser => _supabaseAuth.currentUser;
+
+  Session? get currentSession => _supabaseAuth.currentSession;
 }

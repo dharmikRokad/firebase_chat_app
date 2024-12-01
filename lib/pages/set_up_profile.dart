@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/providers/auth_provider.dart';
+import 'package:chat_app/utils/constants.dart';
 import 'package:chat_app/utils/context_extensions.dart';
 import 'package:chat_app/utils/date_time_extension.dart';
 import 'package:chat_app/utils/img_picker_helper.dart';
@@ -81,6 +82,7 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
 
   void _onSubmitTap() async {
     final provider = context.read<AuthenticationProvider>();
+
     if (provider.profilePic == null) {
       context.showWarning('Profile pic is required.');
       return;
@@ -93,21 +95,24 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
       }
 
       final profilePicUrl = await provider.uploadProfilePick(
-        onFailure: (msg) => context.showError(msg),
+        onFailure: (msg) {
+          context.showError(msg);
+        },
       );
 
+      if (profilePicUrl == null) return;
       await provider.updateProfile(
         {
-          'fname': _fnameController.text,
-          'lname': _lNameController.text,
-          'profession': _proffesionController.text,
-          'birth_date': _dobController.text,
-          'gender': provider.gender,
-          'profile_pic': profilePicUrl,
+          Consts.kFNameKey: _fnameController.text,
+          Consts.kLNameKey: _lNameController.text,
+          Consts.kProfessionKey: _proffesionController.text,
+          Consts.kBirthDateKey: _dobController.text,
+          Consts.kGenderKey: provider.gender,
+          Consts.kProfilePicKey: profilePicUrl,
         },
         onSuccess: (msg) {
           context.showSuccess(msg);
-          context.pushNamed(RouteNames.homePage.name);
+          context.pushReplacementNamed(RouteNames.homePage.name);
         },
         onFailure: (msg) => context.showError(msg),
       );
@@ -177,7 +182,8 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
             controller: _lNameController,
             focusNode: _lNameNode,
             onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
+            onFieldSubmitted: (_) =>
+                FocusScope.of(context).requestFocus(_proffessionNode),
             decoration: const InputDecoration(
               labelText: Strings.lName,
               hintText: Strings.lNmaeHint,
@@ -200,7 +206,7 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
       controller: _proffesionController,
       focusNode: _proffessionNode,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
+      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
       decoration: const InputDecoration(
         labelText: Strings.proffesion,
         hintText: Strings.proffesionHint,
@@ -307,12 +313,11 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
                 } else {
                   openDatePicker().then(
                     (value) {
-                      if (!context.mounted) return;
-                      FocusScope.of(context).unfocus();
                       if (value != null) {
                         provider.setDob(value);
                         _dobController.text = value.ddMonYYYY;
-                        if (!context.mounted) return;
+                        if (!mounted) return;
+                        FocusScope.of(context).unfocus();
                       }
                     },
                   );

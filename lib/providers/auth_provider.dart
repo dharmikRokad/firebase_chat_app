@@ -18,11 +18,16 @@ class AuthenticationProvider extends ChangeNotifier {
     this.supaAuthService,
     this.supaDatabaseService,
     this.supaStorageService,
-  );
+  ) {
+    _me = supaAuthService.getCurrentUser;
+    _currentSession = supaAuthService.currentSession;
+    log('[AuthenticationProvider] current session => $_currentSession');
+  }
 
   bool _isLoading = false;
   bool _isOnboarded = false;
-  User? _me;
+  late User? _me;
+  late Session? _currentSession;
 
   XFile? _profilePic;
   DateTime? _dob;
@@ -31,6 +36,7 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get isLaoding => _isLoading;
   bool get isOnBoarded => _isOnboarded;
   User? get me => _me;
+  Session? get currentSession => _currentSession;
 
   XFile? get profilePic => _profilePic;
   DateTime? get dob => _dob;
@@ -70,6 +76,13 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetValues() {
+    _profilePic = null;
+    _dob = null;
+    _gender = null;
+    notifyListeners();
+  }
+
   Future<void> signIn(
     String email,
     String password, {
@@ -91,22 +104,30 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadProfilePick({
+  Future<String?> uploadProfilePick({
     Function(String)? onSuccess,
     Function(String)? onFailure,
   }) async {
     try {
       changeLoading(true);
+
+      if (_currentSession == null) {
+        onFailure?.call(Strings.loginFirst);
+        return null;
+      }
+
       return await supaStorageService.uploadProfilePic(
-          File(_profilePic?.path ?? ''), _me?.id ?? '');
+          file: File(_profilePic?.path ?? ''),
+          id: _me?.id ?? '',
+          accessToken: _currentSession?.accessToken ?? '');
     } on StorageException catch (e) {
       log('Error - uploading photo => ${e.message}');
       onFailure?.call(e.message);
-      return '';
+      return null;
     } catch (e) {
       log('Error - uploading photo => {e.toString()');
       onFailure?.call(Strings.somethingWrong);
-      return '';
+      return null;
     } finally {
       changeLoading(false);
     }
@@ -143,6 +164,7 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       changeLoading(true);
       await supaAuthService.signOut();
+      resetValues();
       onSuccess?.call(Strings.loggedOut);
     } on AuthException catch (e) {
       log(e.toString());

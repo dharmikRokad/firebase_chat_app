@@ -1,3 +1,4 @@
+import 'package:chat_app/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupaDataBaseService {
@@ -7,7 +8,7 @@ class SupaDataBaseService {
 
   factory SupaDataBaseService() => _instance;
 
-  final _usersTable = Supabase.instance.client.from('users');
+  final _usersTable = Supabase.instance.client.from(Consts.kUsersTable);
 
   Future<void> updateProfile({
     required String uid,
@@ -15,14 +16,14 @@ class SupaDataBaseService {
     Map<String, dynamic> data = const {},
   }) async {
     return await _usersTable.insert({
-      'id': uid,
-      'email': email,
+      Consts.kIdKey: uid,
+      Consts.kEmailKey: email,
       ...data,
     });
   }
 
   Future<bool> isUserOnBoarded({required String uid}) async {
-    final doc = await _usersTable.select().eq('id', uid).single();
+    final doc = await _usersTable.select().eq(Consts.kIdKey, uid).single();
     return doc.isNotEmpty;
   }
 

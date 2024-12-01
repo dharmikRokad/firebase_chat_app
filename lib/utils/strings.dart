@@ -14,6 +14,7 @@ class Strings {
   // auth_provider
   static const String loggedIn = 'Logged in succesfully.';
   static const String loggedOut = 'Logged out.';
+  static const String loginFirst = 'Login First.';
   static const String somethingWrong =
       'Something went wrong. Please try again later.';
   static const String profileUpdated = 'Profile updated successfully.';

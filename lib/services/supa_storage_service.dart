@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:chat_app/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupaStorageService {
@@ -10,17 +11,25 @@ class SupaStorageService {
 
   factory SupaStorageService() => _instance;
 
-  final SupabaseStorageClient _supaStorage = Supabase.instance.client.storage;
+  final SupabaseStorageClient _supabaseStorage =
+      Supabase.instance.client.storage;
 
-  Future<String> uploadProfilePic(File file, String id) async {
-    final String fileName = '$id-${DateTime.now().millisecondsSinceEpoch}.jpg';
-    final resp = await _supaStorage.from('profile_pics').upload(
-          fileName,
+  Future<String> uploadProfilePic({
+    required File file,
+    required String id,
+    required String accessToken,
+    bool isEdit = false,
+  }) async {
+    _supabaseStorage.setAuth(accessToken);
+    log('setted access token => ${_supabaseStorage.headers}');
+    final String path = '${Consts.kProfilePicsFolder}/$id';
+    final resp = await _supabaseStorage.from(Consts.kImagesBucket).upload(
+          path,
           file,
-          fileOptions: const FileOptions(upsert: true),
+          fileOptions: FileOptions(upsert: isEdit),
         );
 
     log(resp);
-    return _supaStorage.from('profile_pics').getPublicUrl(fileName);
+    return _supabaseStorage.from(Consts.kImagesBucket).getPublicUrl(path);
   }
 }
