@@ -2,7 +2,7 @@ import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/services/supa_auth_service.dart';
 import 'package:chat_app/services/supa_database_service.dart';
 import 'package:chat_app/services/supa_storage_service.dart';
-import 'package:chat_app/utils/router.dart';
+import 'package:chat_app/utils/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

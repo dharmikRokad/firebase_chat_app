@@ -1,12 +1,12 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/utils/constants.dart';
-import 'package:chat_app/utils/context_extensions.dart';
-import 'package:chat_app/utils/date_time_extension.dart';
+import 'package:chat_app/utils/extensions/context_extensions.dart';
+import 'package:chat_app/utils/extensions/date_time_extension.dart';
+import 'package:chat_app/utils/extensions/object_extensions.dart';
 import 'package:chat_app/utils/img_picker_helper.dart';
-import 'package:chat_app/utils/router.dart';
+import 'package:chat_app/utils/routes/app_routes.dart';
 import 'package:chat_app/utils/strings.dart';
 import 'package:chat_app/widgets/app_button.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +112,7 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
         },
         onSuccess: (msg) {
           context.showSuccess(msg);
-          context.pushReplacementNamed(RouteNames.homePage.name);
+          context.pushReplacementNamed(AppRoutes.profileCompleted.name);
         },
         onFailure: (msg) => context.showError(msg),
       );
@@ -146,7 +146,7 @@ class _SetUpProfileScreenState extends State<SetUpProfileScreen> {
             }
             provider
                 .setProfilePic(await ImagePickweHelper().pickImage(context));
-            log('image = ${provider.profilePic?.path}');
+            this.log('image = ${provider.profilePic?.path}');
           },
         )
       ],

@@ -1,18 +1,18 @@
-import 'dart:developer';
-import 'package:chat_app/utils/router.dart';
+import 'package:chat_app/utils/extensions/object_extensions.dart';
+import 'package:chat_app/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _SplashPageState();
+  State<StatefulWidget> createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -55,17 +55,18 @@ class _SplashPageState extends State<SplashPage> {
             if (authState?.session == null) {
               log('not any logged in user.');
               if (!mounted) return;
-              context.goNamed(RouteNames.loginPage.name);
+              context.goNamed(AppRoutes.loginPage.name);
             } else {
-              log('found the logged in user - ${authState?.session?.user.email}');
+              log(
+                  'found the logged in user - ${authState?.session?.user.email}');
               if (!mounted) return;
-              
+
               context.goNamed(
                 await context
                         .read<AuthenticationProvider>()
                         .isObBoarded(authState?.session?.user.id ?? '')
-                    ? RouteNames.homePage.name
-                    : RouteNames.setupProfilePage.name,
+                    ? AppRoutes.homePage.name
+                    : AppRoutes.setupProfilePage.name,
               );
             }
           },

@@ -34,4 +34,10 @@ class Strings {
   static const String other = 'Other';
   static const String dateOfBirth = 'Date of Birth';
   static const String dobHint = 'DD/MM/YYYY';
+
+  // profile completed screen
+  static const String completed = 'Completed!';
+  static const String letsGo = "Let's Go";
+  static const String completedDesc =
+      'Your profile has been updated successfully.\nYou can start goddiping with your friends\nby clicking the button below.';
 }

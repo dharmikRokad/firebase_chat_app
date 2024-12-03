@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/utils/constants.dart';
+import 'package:chat_app/utils/extensions/object_extensions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupaStorageService {
@@ -21,7 +21,7 @@ class SupaStorageService {
     bool isEdit = false,
   }) async {
     _supabaseStorage.setAuth(accessToken);
-    log('setted access token => ${_supabaseStorage.headers}');
+    this.log('setted access token => ${_supabaseStorage.headers}');
     final String path = '${Consts.kProfilePicsFolder}/$id';
     final resp = await _supabaseStorage.from(Consts.kImagesBucket).upload(
           path,
@@ -29,7 +29,7 @@ class SupaStorageService {
           fileOptions: FileOptions(upsert: isEdit),
         );
 
-    log(resp);
+    this.log(resp);
     return _supabaseStorage.from(Consts.kImagesBucket).getPublicUrl(path);
   }
 }

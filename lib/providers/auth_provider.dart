@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/services/supa_auth_service.dart';
 import 'package:chat_app/services/supa_database_service.dart';
 import 'package:chat_app/services/supa_storage_service.dart';
+import 'package:chat_app/utils/extensions/object_extensions.dart';
 import 'package:chat_app/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +21,7 @@ class AuthenticationProvider extends ChangeNotifier {
   ) {
     _me = supaAuthService.getCurrentUser;
     _currentSession = supaAuthService.currentSession;
-    log('[AuthenticationProvider] current session => $_currentSession');
+    log('current session => $_currentSession');
   }
 
   bool _isLoading = false;

@@ -1,7 +1,7 @@
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/utils/constants.dart';
-import 'package:chat_app/utils/context_extensions.dart';
-import 'package:chat_app/utils/router.dart';
+import 'package:chat_app/utils/extensions/context_extensions.dart';
+import 'package:chat_app/utils/routes/app_routes.dart';
 import 'package:chat_app/utils/strings.dart';
 import 'package:chat_app/widgets/app_button.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +9,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'login_form');
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'login_form');
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
 
@@ -124,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
           context.showSuccess(Strings.loggedIn);
           context.goNamed(
             await context.read<AuthenticationProvider>().isObBoarded(uid)
-                ? RouteNames.homePage.name
-                : RouteNames.setupProfilePage.name,
+                ? AppRoutes.homePage.name
+                : AppRoutes.setupProfilePage.name,
           );
         },
         onFailure: (msg) => context.showError(msg),
