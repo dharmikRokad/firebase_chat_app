@@ -1,13 +1,10 @@
-import 'package:chat_app/providers/auth_provider.dart';
-import 'package:chat_app/services/supa_auth_service.dart';
-import 'package:chat_app/services/supa_database_service.dart';
-import 'package:chat_app/services/supa_storage_service.dart';
-import 'package:chat_app/utils/routes/app_router.dart';
+import 'package:chat_app/src/chat_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+// FIGMA
+// https://www.figma.com/design/SgtwOt0Nq4E2FUbhrqpOcf/Messaging---Chatbox-App-Design-(Community)?node-id=1-4094&node-type=frame&t=ukTXMjof73EYMKgZ-0
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,43 +13,5 @@ void main() async {
     anonKey: dotenv.env["SB_ANON_KEY"] ?? '',
     url: dotenv.env["SB_PUB_URL"] ?? '',
   );
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        // Auth provider
-        ChangeNotifierProvider(
-          create: (_) => AuthenticationProvider(
-            SupaAuthService(),
-            SupaDataBaseService(),
-            SupaStorageService(),
-          ),
-        ),
-      ],
-      builder: (context, _) => _buildAppWidget(),
-    );
-  }
-
-  Widget _buildAppWidget() {
-    return ScreenUtilInit(
-      designSize: const Size(392, 791),
-      builder: (context, _) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          routerConfig: AppRouter.router,
-        );
-      },
-    );
-  }
+  runApp(const ChatApp());
 }
