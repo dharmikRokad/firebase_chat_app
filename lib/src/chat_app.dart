@@ -1,4 +1,5 @@
 import 'package:chat_app/src/providers/auth_provider.dart';
+import 'package:chat_app/src/providers/chat_provider.dart';
 import 'package:chat_app/src/services/supa_auth_service.dart';
 import 'package:chat_app/src/services/supa_database_service.dart';
 import 'package:chat_app/src/services/supa_storage_service.dart';
@@ -17,6 +18,15 @@ class ChatApp extends StatelessWidget {
         // Auth provider
         ChangeNotifierProvider(
           create: (_) => AuthenticationProvider(
+            SupaAuthService(),
+            SupaDataBaseService(),
+            SupaStorageService(),
+          ),
+        ),
+
+        // chat provider
+        ChangeNotifierProvider(
+          create: (_) => ChatProvider(
             SupaAuthService(),
             SupaDataBaseService(),
             SupaStorageService(),
