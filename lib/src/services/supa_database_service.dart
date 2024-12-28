@@ -28,8 +28,6 @@ class SupaDataBaseService {
   }
 
   Stream<List<Map<String, dynamic>>> getUsers() {
-    return _usersTable.asStream().map((snapshot) {
-      return snapshot.docs.map((e) => e.data()).toList();
-    });
+    return _usersTable.stream(primaryKey: ['id']);
   }
 }

@@ -1,5 +1,7 @@
+import 'package:chat_app/src/core/constants.dart';
 import 'package:chat_app/src/core/extensions/object_extensions.dart';
 import 'package:chat_app/src/core/themes/app_colors.dart';
+import 'package:chat_app/src/core/widgets/confirmation_dialog.dart';
 import 'package:chat_app/src/providers/auth_provider.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
 import 'package:chat_app/src/providers/chat_provider.dart';
@@ -36,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              const Text("Users"),
-              const SizedBox(height: 10),
               StreamBuilder(
                 stream: provider.getUsers(),
                 builder: (context, snapshot) {
@@ -72,7 +72,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     /// Active - With Data View.
                     final users = snapshot.data!;
                     log("users => $users");
-                    return Container(color: AppColors.primaryColor);
+                    return ListView.builder(
+                      itemCount: users.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final user = users[index];
+                        return ListTile(
+                          title: Text(user[Consts.kFNameKey] +
+                              " " +
+                              user[Consts.kLNameKey]),
+                          leading: CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                NetworkImage(user[Consts.kProfilePicKey]),
+                          ),
+                          subtitle: Text(user[Consts.kProfessionKey]),
+                        );
+                      },
+                    );
                   }
 
                   return Container();
@@ -89,25 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text("Alert!"),
-          content: const Text(
-            "Are you sure want to log out from the app?",
-          ),
-          actions: [
-            TextButton(
-              onPressed: context.pop,
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await context.read<AuthenticationProvider>().signOut();
-                if (!context.mounted) return;
-                context.goNamed(AppRoutes.loginPage.name);
-              },
-              child: const Text('Log out'),
-            ),
-          ],
+        return ConfirmationDialog(
+          content: "Are you sure want to log out from the app?",
+          confirmText: "Log Out",
+          onSubmit: () async {
+            await context.read<AuthenticationProvider>().signOut();
+            if (!context.mounted) return;
+            context.goNamed(AppRoutes.loginPage.name);
+          },
         );
       },
     );
