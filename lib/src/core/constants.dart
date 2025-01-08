@@ -17,4 +17,7 @@ class Consts {
   static const String kBirthDateKey = 'birth_date';
   static const String kGenderKey = 'gender';
   static const String kProfilePicKey = 'profile_pic';
+
+  // Shared Preferences
+  static const String kThemeKey = 'theme';
 }

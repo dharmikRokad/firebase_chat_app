@@ -1,3 +1,5 @@
+import 'package:chat_app/src/core/app_provider.dart';
+import 'package:chat_app/src/core/themes/app_colors.dart';
 import 'package:chat_app/src/providers/auth_provider.dart';
 import 'package:chat_app/src/providers/chat_provider.dart';
 import 'package:chat_app/src/services/supa_auth_service.dart';
@@ -24,6 +26,10 @@ class ChatApp extends StatelessWidget {
           ),
         ),
 
+        ChangeNotifierProvider(
+          create: (_) => AppProvider(),
+        ),
+
         // chat provider
         ChangeNotifierProvider(
           create: (_) => ChatProvider(
@@ -45,7 +51,7 @@ class ChatApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.lPrimary),
             useMaterial3: true,
           ),
           routerConfig: AppRouter.router,

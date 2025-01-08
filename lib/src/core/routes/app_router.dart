@@ -1,3 +1,4 @@
+import 'package:chat_app/src/core/widgets/internet_connectivity_wrapper.dart';
 import 'package:chat_app/src/ui/auth/profile_completed_screen.dart';
 import 'package:chat_app/src/ui/chat/chat_screen.dart';
 import 'package:chat_app/src/ui/home/home_screen.dart';
@@ -30,29 +31,39 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.loginPage.path,
         name: AppRoutes.loginPage.name,
-        builder: (context, state) => LoginScreen(key: state.pageKey),
+        builder: (context, state) => InternetConnectivityWrapper(
+          child: LoginScreen(key: state.pageKey),
+        ),
       ),
       GoRoute(
         path: AppRoutes.setupProfilePage.path,
         name: AppRoutes.setupProfilePage.name,
-        builder: (context, state) => SetUpProfileScreen(key: state.pageKey),
+        builder: (context, state) => InternetConnectivityWrapper(
+          child: SetUpProfileScreen(key: state.pageKey),
+        ),
       ),
       GoRoute(
         path: AppRoutes.profileCompleted.path,
         name: AppRoutes.profileCompleted.name,
-        builder: (context, state) => ProfileCompletedScreen(key: state.pageKey),
+        builder: (context, state) => InternetConnectivityWrapper(
+          child: ProfileCompletedScreen(key: state.pageKey),
+        ),
       ),
 
       // home
       GoRoute(
         path: AppRoutes.homePage.path,
         name: AppRoutes.homePage.name,
-        builder: (context, state) => HomeScreen(key: state.pageKey),
+        builder: (context, state) => InternetConnectivityWrapper(
+          child: HomeScreen(key: state.pageKey),
+        ),
         routes: [
           GoRoute(
             path: AppRoutes.chatScreen.path,
             name: AppRoutes.chatScreen.name,
-            builder: (context, state) => ChatScreen(key: state.pageKey),
+            builder: (context, state) => InternetConnectivityWrapper(
+              child: ChatScreen(key: state.pageKey),
+            ),
           ),
         ],
       )

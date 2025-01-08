@@ -11,6 +11,7 @@ class AnimationAppAsset extends AppAsset {
   String get path => '${super.path}/animations';
 
   String get completedProfile => '$path/completed_animation.json';
+  String get noInternet => '$path/no_connection_dog.json';
 }
 
 class ImagesAppAsset extends AppAsset {

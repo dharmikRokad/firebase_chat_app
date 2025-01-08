@@ -1,4 +1,5 @@
 import 'package:chat_app/src/chat_app.dart';
+import 'package:chat_app/src/core/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  SharedPrefs.instance.init();
   await Supabase.initialize(
     anonKey: dotenv.env["SB_ANON_KEY"] ?? '',
     url: dotenv.env["SB_PUB_URL"] ?? '',

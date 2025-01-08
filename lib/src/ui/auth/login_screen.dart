@@ -1,9 +1,12 @@
+import 'package:chat_app/src/core/field_validators.dart';
+import 'package:chat_app/src/core/themes/app_colors.dart';
 import 'package:chat_app/src/providers/auth_provider.dart';
 import 'package:chat_app/src/core/constants.dart';
 import 'package:chat_app/src/core/extensions/context_extensions.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
 import 'package:chat_app/src/core/strings.dart';
 import 'package:chat_app/src/widgets/app_button.dart';
+import 'package:chat_app/src/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -40,57 +43,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 RichText(
                   text: TextSpan(
                     text: Strings.welcome,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.apply(fontWeightDelta: 2),
+                    style: Theme.of(context).textTheme.titleLarge?.apply(
+                          fontWeightDelta: 2,
+                          color: AppColors.lTextPrimary,
+                        ),
                     children: [
                       TextSpan(
                         text: '\n${Strings.loginTOContinueApp}',
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.bodyLarge?.apply(
+                              color: AppColors.lTextSecondary,
+                            ),
                       ),
                     ],
                   ),
                 ),
                 80.h.verticalSpace,
-                TextFormField(
+                AppTextField(
                   controller: _emailController,
                   focusNode: _emailNode,
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),
                   onFieldSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(_passNode),
-                  decoration: const InputDecoration(
-                    labelText: Strings.email,
-                    hintText: Strings.emailHint,
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty == true || value == null) {
-                      return Strings.emailRequired;
-                    }
-                    if (!Consts.emailReg.hasMatch(value)) {
-                      return Strings.enterValidEmail;
-                    }
-                    return null;
-                  },
+                  labelText: Strings.email,
+                  hintText: Strings.emailHint,
+                  validator: (val) => FieldValidators().multiCheck(val, [
+                    FieldValidators().required,
+                    FieldValidators().email,
+                  ]),
                 ),
                 20.h.verticalSpace,
-                TextFormField(
+                AppTextField(
                   controller: _passController,
                   focusNode: _passNode,
                   obscureText: true,
                   obscuringCharacter: '-',
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                  onFieldSubmitted: (_) =>
-                      _onLoginTap(context.read<AuthenticationProvider>()),
-                  decoration: const InputDecoration(
-                    labelText: Strings.password,
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty == true) return Strings.passRequired;
-                    return null;
-                  },
+                  onFieldSubmitted: (_) => _onLoginTap(),
+                  labelText: Strings.password,
+                  validator: (val) => FieldValidators().multiCheck(val, [
+                    FieldValidators().required,
+                    FieldValidators().password,
+                  ]),
                 ),
                 50.h.verticalSpace,
                 Align(
@@ -98,9 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Consumer<AuthenticationProvider>(
                     builder: (context, provider, _) {
                       return AppButton(
-                        onPressed: () {
-                          _onLoginTap(provider);
-                        },
+                        onPressed: _onLoginTap,
                         suffixSpace: 30,
                         title: Strings.continueTxt,
                         isLoading: provider.isLaoding,
@@ -116,7 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _onLoginTap(AuthenticationProvider provider) {
+  void _onLoginTap() {
+    final provider = context.read<AuthenticationProvider>();
     if (_formKey.currentState?.validate() == true) {
       provider.signIn(
         _emailController.text.trim(),
@@ -124,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onSuccess: (uid) async {
           context.showSuccess(Strings.loggedIn);
           context.goNamed(
-            await context.read<AuthenticationProvider>().isObBoarded(uid)
+            await provider.isObBoarded(uid)
                 ? AppRoutes.homePage.name
                 : AppRoutes.setupProfilePage.name,
           );

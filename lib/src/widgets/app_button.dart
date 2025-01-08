@@ -13,7 +13,7 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
   });
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String title;
   final Widget? prefix;
   final Widget? suffix;
@@ -27,10 +27,12 @@ class AppButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         fixedSize: Size(85.sw, 50.h),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        backgroundColor: isLoading
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.r),
+          borderRadius: BorderRadius.circular(10.r),
         ),
       ),
       child: isLoading
@@ -40,7 +42,7 @@ class AppButton extends StatelessWidget {
               child: CircularProgressIndicator(
                 strokeCap: StrokeCap.round,
                 strokeWidth: 3,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
               ),
             )
           : Row(
@@ -56,7 +58,7 @@ class AppButton extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.apply(
                       fontWeightDelta: 2,
-                      color: Theme.of(context).colorScheme.onSurface),
+                      color: Theme.of(context).colorScheme.surface),
                 ),
                 if (suffix != null) ...[
                   suffixSpace.h.horizontalSpace,
