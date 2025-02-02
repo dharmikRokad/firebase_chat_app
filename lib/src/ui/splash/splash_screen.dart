@@ -56,16 +56,15 @@ class _SplashScreenState extends State<SplashScreen> {
               if (!mounted) return;
               context.goNamed(AppRoutes.loginPage.name);
             } else {
-              log(
-                  'found the logged in user - ${authState?.session?.user.email}');
+              log('found the logged in user - ${authState?.session?.user.email}');
               if (!mounted) return;
 
               context.goNamed(
                 await context
                         .read<AuthenticationProvider>()
                         .isObBoarded(authState?.session?.user.id ?? '')
-                    ? AppRoutes.homePage.name
-                    : AppRoutes.setupProfilePage.name,
+                    ? AppRoutes.chats.name
+                    : AppRoutes.setupProfile.name,
               );
             }
           },

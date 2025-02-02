@@ -1,19 +1,23 @@
 enum AppRoutes {
-  // splash
+  // splash ================================
   splashPage,
 
-  // auth
+  // auth ================================
   loginPage,
-  setupProfilePage,
+  setupProfile,
   profileCompleted,
 
-  // home
-  homePage,
+  // home ================================
+  tabs,
 
-  // chat
+  // chats ================================
+  chats,
   chatScreen,
+
+  // Profile ================================
+  profile
 }
 
 extension PathName on AppRoutes {
-  String get path => switch (this) { AppRoutes.homePage => "/", _ => "/$name" };
+  String get path => switch (this) { AppRoutes.chats => "/", _ => "/$name" };
 }

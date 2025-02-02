@@ -26,6 +26,8 @@ class ImagesAppAsset extends AppAsset {
   String get audioCcall => '$path/audio_call.png';
   String get back => '$path/back.png';
   String get bell => '$path/bell.png';
+  String get call => '$path/call.png';
+  String get settings => '$path/settings.png';
   String get camera => '$path/camera.png';
   String get contact => '$path/contact.png';
   String get delete => '$path/delete.png';

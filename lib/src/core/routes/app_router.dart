@@ -1,11 +1,13 @@
-import 'package:chat_app/src/core/widgets/internet_connectivity_wrapper.dart';
+import 'package:chat_app/src/widgets/internet_connectivity_wrapper.dart';
 import 'package:chat_app/src/ui/auth/profile_completed_screen.dart';
 import 'package:chat_app/src/ui/chat/chat_screen.dart';
 import 'package:chat_app/src/ui/home/home_screen.dart';
 import 'package:chat_app/src/ui/auth/login_screen.dart';
 import 'package:chat_app/src/ui/auth/set_up_profile_screen.dart';
+import 'package:chat_app/src/ui/profile/profile_screen.dart';
 import 'package:chat_app/src/ui/splash/splash_screen.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
+import 'package:chat_app/src/ui/tabs/tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +16,12 @@ class AppRouter {
 
   static final _rootNavigator = GlobalKey<NavigatorState>();
   static GlobalKey<NavigatorState> get rootNavigator => _rootNavigator;
+
+  static final _chatsNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: "Chats Nav");
+
+  static final _profileNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: "Profile Mav");
 
   static final router = GoRouter(
     initialLocation: AppRoutes.splashPage.path,
@@ -36,8 +44,8 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.setupProfilePage.path,
-        name: AppRoutes.setupProfilePage.name,
+        path: AppRoutes.setupProfile.path,
+        name: AppRoutes.setupProfile.name,
         builder: (context, state) => InternetConnectivityWrapper(
           child: SetUpProfileScreen(key: state.pageKey),
         ),
@@ -50,23 +58,50 @@ class AppRouter {
         ),
       ),
 
-      // home
-      GoRoute(
-        path: AppRoutes.homePage.path,
-        name: AppRoutes.homePage.name,
-        builder: (context, state) => InternetConnectivityWrapper(
-          child: HomeScreen(key: state.pageKey),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            InternetConnectivityWrapper(
+          child: TabsScreen(navigationShell: navigationShell),
         ),
-        routes: [
-          GoRoute(
-            path: AppRoutes.chatScreen.path,
-            name: AppRoutes.chatScreen.name,
-            builder: (context, state) => InternetConnectivityWrapper(
-              child: ChatScreen(key: state.pageKey),
-            ),
+        branches: [
+          /// Chat's Branch
+          StatefulShellBranch(
+            navigatorKey: _chatsNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.chats.path,
+                name: AppRoutes.chats.name,
+                builder: (context, state) => InternetConnectivityWrapper(
+                  child: HomeScreen(key: state.pageKey),
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.chatScreen.path,
+                    name: AppRoutes.chatScreen.name,
+                    builder: (context, state) => InternetConnectivityWrapper(
+                      child: ChatScreen(key: state.pageKey),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+
+          /// Profile's Branch
+          StatefulShellBranch(
+            navigatorKey: _profileNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.profile.path,
+                name: AppRoutes.profile.name,
+                builder: (context, state) => InternetConnectivityWrapper(
+                  child: ProfileScreen(key: state.pageKey),
+                ),
+              ),
+            ],
           ),
         ],
-      )
+      ),
     ],
   );
 }

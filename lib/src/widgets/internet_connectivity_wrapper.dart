@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/app_provider.dart';
 import 'package:chat_app/src/core/extensions/object_extensions.dart';
-import 'package:chat_app/src/core/widgets/no_internet_widget.dart';
+import 'package:chat_app/src/widgets/no_internet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

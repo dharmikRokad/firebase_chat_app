@@ -43,7 +43,7 @@ class ProfileCompletedScreen extends StatelessWidget {
             const Spacer(),
             AppButton(
               onPressed: () {
-                context.pushReplacementNamed(AppRoutes.homePage.name);
+                context.pushReplacementNamed(AppRoutes.chats.name);
               },
               title: Strings.letsGo,
             )

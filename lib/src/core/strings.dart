@@ -40,4 +40,8 @@ class Strings {
   static const String letsGo = "Let's Go";
   static const String completedDesc =
       'Your profile has been updated successfully.\nYou can start goddiping with your friends\nby clicking the button below.';
+
+  // Tabs
+  static const String message = "Message";
+  static const String profile = "Profile";
 }

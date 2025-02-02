@@ -117,8 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
           context.showSuccess(Strings.loggedIn);
           context.goNamed(
             await provider.isObBoarded(uid)
-                ? AppRoutes.homePage.name
-                : AppRoutes.setupProfilePage.name,
+                ? AppRoutes.chats.name
+                : AppRoutes.setupProfile.name,
           );
         },
         onFailure: (msg) => context.showError(msg),
