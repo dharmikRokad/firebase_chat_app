@@ -1,3 +1,4 @@
+import 'package:chat_app/src/chat_app_injector.dart';
 import 'package:chat_app/src/core/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,9 +9,9 @@ class SupaDataBaseService {
 
   factory SupaDataBaseService() => _instance;
 
-  final _usersTable = Supabase.instance.client.from(Consts.kUsersTable);
+  final _usersTable = sl<Supabase>().client.from(Consts.kUsersTable);
 
-  Future<void> updateProfile({
+  Future<dynamic> updateProfile({
     required String uid,
     required String email,
     Map<String, dynamic> data = const {},

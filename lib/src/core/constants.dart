@@ -17,7 +17,11 @@ class Consts {
   static const String kBirthDateKey = 'birth_date';
   static const String kGenderKey = 'gender';
   static const String kProfilePicKey = 'profile_pic';
-
-  // Shared Preferences
-  static const String kThemeKey = 'theme';
+  static const String kAddressKey = 'address';
+  static const String kCityKey = 'city';
+  static const String kStateKey = 'state';
+  static const String kPincodeKey = 'pincode';
+  static const String kPhoneKey = 'phone';
+  static const String kIsPhoneVerifiedKey = 'is_phone_verified';
+  static const String kUserNameKey = 'user_name';
 }

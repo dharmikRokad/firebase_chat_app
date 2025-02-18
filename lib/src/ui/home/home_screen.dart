@@ -1,17 +1,17 @@
-import 'package:chat_app/src/chat_app.dart';
 import 'package:chat_app/src/core/app_assets.dart';
 import 'package:chat_app/src/core/constants.dart';
+import 'package:chat_app/src/core/extensions/context_extensions.dart';
 import 'package:chat_app/src/core/extensions/object_extensions.dart';
 import 'package:chat_app/src/core/themes/app_colors.dart';
-import 'package:chat_app/src/widgets/confirmation_dialog.dart';
-import 'package:chat_app/src/providers/auth_provider.dart';
+import 'package:chat_app/src/core/presentation/widgets/confirmation_dialog.dart';
+import 'package:chat_app/src/features/auth/presentation/providers/auth_provider.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
+import 'package:chat_app/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:chat_app/src/providers/chat_provider.dart';
-import 'package:chat_app/src/widgets/app_icon_button.dart';
-import 'package:chat_app/src/widgets/custom_scaffold.dart';
-import 'package:chat_app/src/widgets/profile_pic_widget.dart';
+import 'package:chat_app/src/core/presentation/widgets/app_icon_button.dart';
+import 'package:chat_app/src/core/presentation/widgets/custom_scaffold.dart';
+import 'package:chat_app/src/core/presentation/widgets/profile_pic_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return CustomScaffold(
       title: "Home",
       leading: AppIconButton(iconPath: ImagesAppAsset().search),
-      actions: const [
-        ProfilePic(url: "https://avatar.iran.liara.run/public/24"),
+      actions: [
+        const ProfilePic(url: "https://avatar.iran.liara.run/public/24"),
+        AppIconButton(
+          iconPath: ImagesAppAsset().attechment,
+          onPressed: () {
+            context.read<AuthenticationProvider>().signOut(
+                  onSuccess: context.showSuccess,
+                );
+          },
+        ),
       ],
       body: Consumer<ChatProvider>(
         builder: (context, provider, _) {

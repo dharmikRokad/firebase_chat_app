@@ -1,0 +1,1 @@
+/home/user/firebase_chat_app/build/app/intermediates/cxx/Debug/6z6w1dt6/obj/x86_64

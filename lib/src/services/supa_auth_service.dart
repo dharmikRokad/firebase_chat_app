@@ -1,3 +1,4 @@
+import 'package:chat_app/src/chat_app_injector.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupaAuthService {
@@ -7,7 +8,7 @@ class SupaAuthService {
 
   factory SupaAuthService() => _instance;
 
-  final GoTrueClient _supabaseAuth = Supabase.instance.client.auth;
+  final GoTrueClient _supabaseAuth = sl<Supabase>().client.auth;
 
   Future<User?> signIn(
       {required String email, required String password}) async {

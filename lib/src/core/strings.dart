@@ -34,6 +34,15 @@ class Strings {
   static const String other = 'Other';
   static const String dateOfBirth = 'Date of Birth';
   static const String dobHint = 'DD/MM/YYYY';
+  static const String setProfilePic = "Select your profile picture";
+  static const String addPhoto = "Add Photo";
+  static const String removePhoto = "Remove Photo";
+  static const String setRecidentialDetails = "Fill your recidential Information";
+  static const String address = "Address";
+  static const String city = "City";
+  static const String state = "State";
+  static const String pincode = "Pincode";
+  static const String validPincode = "Please enter valid pin code";
 
   // profile completed screen
   static const String completed = 'Completed!';

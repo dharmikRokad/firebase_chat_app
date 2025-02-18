@@ -1,11 +1,12 @@
-import 'package:chat_app/src/widgets/internet_connectivity_wrapper.dart';
-import 'package:chat_app/src/ui/auth/profile_completed_screen.dart';
+import 'package:chat_app/src/core/presentation/widgets/internet_connectivity_wrapper.dart';
+import 'package:chat_app/src/features/setup_profile/presentation/screens/profile_completed_screen.dart';
+import 'package:chat_app/src/features/setup_profile/presentation/screens/setup_profile_screen.dart';
 import 'package:chat_app/src/ui/chat/chat_screen.dart';
 import 'package:chat_app/src/ui/home/home_screen.dart';
-import 'package:chat_app/src/ui/auth/login_screen.dart';
-import 'package:chat_app/src/ui/auth/set_up_profile_screen.dart';
+import 'package:chat_app/src/features/auth/presentation/screens/login_screen.dart';
+import 'package:chat_app/src/features/auth/presentation/screens/set_up_profile_screen.dart';
 import 'package:chat_app/src/ui/profile/profile_screen.dart';
-import 'package:chat_app/src/ui/splash/splash_screen.dart';
+import 'package:chat_app/src/core/presentation/splash_screen.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
 import 'package:chat_app/src/ui/tabs/tab_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +29,14 @@ class AppRouter {
     debugLogDiagnostics: true,
     navigatorKey: _rootNavigator,
     routes: [
-      // splash
+      // Splash ================================
       GoRoute(
         path: AppRoutes.splashPage.path,
         name: AppRoutes.splashPage.name,
         builder: (context, state) => SplashScreen(key: state.pageKey),
       ),
 
-      // auth
+      // Auth ================================
       GoRoute(
         path: AppRoutes.loginPage.path,
         name: AppRoutes.loginPage.name,
@@ -43,11 +44,13 @@ class AppRouter {
           child: LoginScreen(key: state.pageKey),
         ),
       ),
+
+      // Setup Profile ================================
       GoRoute(
         path: AppRoutes.setupProfile.path,
         name: AppRoutes.setupProfile.name,
         builder: (context, state) => InternetConnectivityWrapper(
-          child: SetUpProfileScreen(key: state.pageKey),
+          child: SetupProfileScreen(key: state.pageKey),
         ),
       ),
       GoRoute(
@@ -64,7 +67,7 @@ class AppRouter {
           child: TabsScreen(navigationShell: navigationShell),
         ),
         branches: [
-          /// Chat's Branch
+          /// Chat's Branch ================================
           StatefulShellBranch(
             navigatorKey: _chatsNavigatorKey,
             routes: [
@@ -87,7 +90,7 @@ class AppRouter {
             ],
           ),
 
-          /// Profile's Branch
+          /// Profile's Branch ================================
           StatefulShellBranch(
             navigatorKey: _profileNavigatorKey,
             routes: [

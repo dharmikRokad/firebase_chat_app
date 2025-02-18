@@ -1,6 +1,8 @@
+import 'package:chat_app/src/chat_app_injector.dart';
 import 'package:chat_app/src/core/app_provider.dart';
 import 'package:chat_app/src/core/themes/app_colors.dart';
-import 'package:chat_app/src/providers/auth_provider.dart';
+import 'package:chat_app/src/features/auth/presentation/providers/auth_provider.dart';
+import 'package:chat_app/src/features/setup_profile/presentation/providers/setup_profile_provider.dart';
 import 'package:chat_app/src/providers/chat_provider.dart';
 import 'package:chat_app/src/services/supa_auth_service.dart';
 import 'package:chat_app/src/services/supa_database_service.dart';
@@ -18,13 +20,10 @@ class ChatApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Auth provider
-        ChangeNotifierProvider(
-          create: (_) => AuthenticationProvider(
-            SupaAuthService(),
-            SupaDataBaseService(),
-            SupaStorageService(),
-          ),
-        ),
+        ChangeNotifierProvider(create: (_) => sl<AuthenticationProvider>()),
+
+        // setup profile provider
+        ChangeNotifierProvider(create: (_) => sl<SetupProfileProvider>()),
 
         ChangeNotifierProvider(
           create: (_) => AppProvider(),

@@ -1,3 +1,4 @@
+import 'package:chat_app/src/chat_app_injector.dart';
 import 'package:chat_app/src/core/extensions/object_extensions.dart';
 import 'package:chat_app/src/core/shared_prefs.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -51,13 +52,13 @@ class AppProvider extends ChangeNotifier {
 
   /// THEME
   ThemeMode _currentThemeMode =
-      SharedPrefs.instance.theme?.toTheme ?? ThemeMode.system;
+      sl<SharedPrefs>().theme?.toTheme ?? ThemeMode.system;
 
   ThemeMode get currentThemeMode => _currentThemeMode;
 
   void changeThemeMode(ThemeMode newThemeMode) {
     _currentThemeMode = newThemeMode;
-    SharedPrefs.instance.setTheme(newThemeMode.name);
+    sl<SharedPrefs>().setTheme(newThemeMode.name);
     notifyListeners();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:chat_app/src/widgets/custom_scaffold.dart';
+import 'package:chat_app/src/core/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
