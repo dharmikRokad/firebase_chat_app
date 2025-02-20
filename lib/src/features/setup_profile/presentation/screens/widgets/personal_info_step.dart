@@ -25,34 +25,60 @@ class _PersonalInfoStepState extends State<PersonalInfoStep> {
   late SetupProfileProvider provider;
 
   @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.fnameController.addListener(_validateForm);
+      provider.lNameController.addListener(_validateForm);
+      provider.usernameController.addListener(_validateForm);
+      provider.proffesionController.addListener(_validateForm);
+      provider.dobController.addListener(_validateForm);
+    });
+  }
+
+  _validateForm() {
+    Future.delayed(Duration.zero, () {
+      widget.completeStep(_formKey.currentState?.validate() == true &&
+          provider.gender != null &&
+          provider.dob != null);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    provider = Provider.of<SetupProfileProvider>(context, listen: true);
+    provider = Provider.of<SetupProfileProvider>(context);
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
+      child: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        shrinkWrap: true,
         padding: const EdgeInsets.only(left: 10),
-        child: Column(
-          children: [
-            Text(
-              Strings.setupProfile,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.apply(fontWeightDelta: 2),
-            ),
-            40.h.verticalSpace,
-            _buildInputNameWidget(),
-            20.h.verticalSpace,
-            _buildInputUsernameWidget(),
-            20.h.verticalSpace,
-            _buildInputProfessionWidget(),
-            20.h.verticalSpace,
-            _buildGenderSelectionWidget(),
-            20.h.verticalSpace,
-            _buildBirthDateSelectionwidget(),
-            30.h.verticalSpace,
-          ],
-        ),
+        children: [
+          5.verticalSpace,
+          Text(
+            Strings.setupProfile,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.apply(fontWeightDelta: 2),
+          ),
+          10.h.verticalSpace,
+          Text(
+            Strings.personalInfoStepSubheading,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          40.h.verticalSpace,
+          _buildInputNameWidget(),
+          20.h.verticalSpace,
+          _buildInputUsernameWidget(),
+          20.h.verticalSpace,
+          _buildInputProfessionWidget(),
+          20.h.verticalSpace,
+          _buildGenderSelectionWidget(),
+          20.h.verticalSpace,
+          _buildBirthDateSelectionwidget(),
+          30.h.verticalSpace,
+        ],
       ),
     );
   }
@@ -113,8 +139,8 @@ class _PersonalInfoStepState extends State<PersonalInfoStep> {
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(_proffessionNode),
       decoration: const InputDecoration(
-        labelText: Strings.proffesion,
-        hintText: Strings.proffesionHint,
+        labelText: Strings.username,
+        prefixText: '@',
         border: OutlineInputBorder(),
       ),
       validator: (value) {
@@ -185,6 +211,7 @@ class _PersonalInfoStepState extends State<PersonalInfoStep> {
         } else {
           provider.setGender(text);
         }
+        _validateForm();
       },
       child: AnimatedContainer(
         height: 50.h,

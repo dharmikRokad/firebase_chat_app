@@ -23,17 +23,22 @@ class ProfilePicStep extends StatelessWidget with WizardStep {
       child: Padding(
         padding: const EdgeInsets.only(left: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            5.verticalSpace,
             Text(
-              Strings.setProfilePic,
+              Strings.profilePicStepHeading,
               style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.apply(fontWeightDelta: 2),
-              textAlign: TextAlign.center,
+                  .textTheme
+                  .headlineSmall
+                  ?.apply(fontWeightDelta: 2),
             ),
-            20.verticalSpace,
+            10.verticalSpace,
+            Text(
+              Strings.profilePicStepSubheading,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            30.verticalSpace,
             Container(
               height: .85.sw,
               width: .85.sw,
@@ -48,17 +53,19 @@ class ProfilePicStep extends StatelessWidget with WizardStep {
                     : null,
               ),
             ),
-            20.verticalSpace,
+            30.verticalSpace,
             AppButton(
-              title: provider.profilePic == null ? Strings.addPhoto : Strings.removePhoto,
+              title: provider.profilePic == null
+                  ? Strings.addPhoto
+                  : Strings.removePhoto,
               onPressed: () async {
                 if (provider.profilePic != null) {
                   provider.setProfilePic(null);
                   completeStep(false);
                   return;
                 }
-                provider
-                    .setProfilePic(await ImagePickweHelper().pickImage(context));
+                provider.setProfilePic(
+                    await ImagePickweHelper().pickImage(context));
                 completeStep(true);
                 log('image = ${provider.profilePic?.path}');
               },

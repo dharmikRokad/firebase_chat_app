@@ -4,7 +4,6 @@ import 'package:chat_app/src/features/setup_profile/presentation/screens/setup_p
 import 'package:chat_app/src/ui/chat/chat_screen.dart';
 import 'package:chat_app/src/ui/home/home_screen.dart';
 import 'package:chat_app/src/features/auth/presentation/screens/login_screen.dart';
-import 'package:chat_app/src/features/auth/presentation/screens/set_up_profile_screen.dart';
 import 'package:chat_app/src/ui/profile/profile_screen.dart';
 import 'package:chat_app/src/core/presentation/splash_screen.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';

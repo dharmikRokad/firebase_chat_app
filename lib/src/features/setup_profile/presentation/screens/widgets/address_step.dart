@@ -47,11 +47,7 @@ class _AddressStepState extends State<AddressStep> {
 
   void _validateForm() {
     Future.delayed(Duration.zero, () {
-      if (_formKey.currentState?.validate() == true) {
-        widget.completeStep(true);
-      } else {
-        widget.completeStep(false);
-      }
+      widget.completeStep(_formKey.currentState?.validate() == true);
     });
   }
 
@@ -64,12 +60,17 @@ class _AddressStepState extends State<AddressStep> {
       child: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            30.verticalSpace,
             Text(
-              Strings.setRecidentialDetails,
+              Strings.addressStepHeading,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
+            ),
+            10.verticalSpace,
+            Text(
+              Strings.addressStepSubheading,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             30.verticalSpace,
             TextFormField(

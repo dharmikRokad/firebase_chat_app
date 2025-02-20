@@ -1,5 +1,7 @@
 import 'package:chat_app/src/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pinput/pinput.dart';
 
 extension ThemeExtensions on BuildContext {
   bool get isDark => Theme.of(this).brightness == Brightness.dark;
@@ -35,4 +37,19 @@ extension SnackBarExt on BuildContext {
     );
     return ScaffoldMessenger.of(this).showSnackBar(snak);
   }
+
+  PinTheme get pinTheme => PinTheme(
+        width: 56,
+        height: 56,
+        textStyle: TextStyle(
+          fontSize: 28.sp,
+          fontWeight: FontWeight.w600,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(this).brightness == Brightness.dark
+              ? AppColors.lTextSecondary
+              : AppColors.lLightGrey,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      );
 }

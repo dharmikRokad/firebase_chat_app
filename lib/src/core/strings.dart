@@ -21,10 +21,13 @@ class Strings {
 
   // seet up profile
   static const String setupProfile = 'Set up your profile';
+  static const String personalInfoStepSubheading =
+      "Improvise your profile by sharing a little about you";
   static const String fName = 'First Name';
   static const String fNameHint = 'John';
   static const String lName = 'Last Name';
   static const String lNmaeHint = 'Doe';
+  static const String username = 'Username';
   static const String proffesion = 'Proffesion';
   static const String proffesionHint = 'Buisness Administrtor';
   static const String required = 'Required!';
@@ -34,15 +37,26 @@ class Strings {
   static const String other = 'Other';
   static const String dateOfBirth = 'Date of Birth';
   static const String dobHint = 'DD/MM/YYYY';
-  static const String setProfilePic = "Select your profile picture";
+  static const String profilePicStepHeading = "Select your profile picture";
+  static const String profilePicStepSubheading = "Allow others to visulize you";
   static const String addPhoto = "Add Photo";
   static const String removePhoto = "Remove Photo";
-  static const String setRecidentialDetails = "Fill your recidential Information";
+  static const String addressStepHeading = "Fill your recidential Information";
+  static const String addressStepSubheading =
+      "Your residential data can make your profile more authentic for others.";
   static const String address = "Address";
   static const String city = "City";
   static const String state = "State";
   static const String pincode = "Pincode";
   static const String validPincode = "Please enter valid pin code";
+  static const String phoneStepHeading = "Enter your phone number";
+  static const String phoneStepSubheading =
+      "We will send you a verification code to verify the entered number.";
+  static const String phoneNumber = "Phone number";
+  static const String validPhoneNumber = "please enter correct phone number";
+  static const String enterCodeSentTo = "Enter the verification code sent to";
+  static const String didntRecieveCode = "Didn't receive the code?";
+  static const String sendAgain = "Send again";
 
   // profile completed screen
   static const String completed = 'Completed!';
