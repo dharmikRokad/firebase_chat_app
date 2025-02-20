@@ -1,0 +1,2 @@
+/home/user/firebase_chat_app/android/app/.cxx/Debug/5s165v4g/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/user/firebase_chat_app/android/app/.cxx/Debug/5s165v4g/armeabi-v7a/CMakeFiles/rebuild_cache.dir
