@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
               log('not any logged in user.');
               if (!mounted) return;
 
-              sl<SharedPrefs>().removeUID();
+              sl<SharedPrefs>().removeUser();
               sl<SharedPrefs>().removeAccessToken();
               sl<SharedPrefs>().removeRefreshToken();
 
@@ -66,7 +66,8 @@ class _SplashScreenState extends State<SplashScreen> {
               log('found the logged in user - ${authState?.session?.user.email}');
               if (!mounted) return;
 
-              sl<SharedPrefs>().setUID(authState?.session?.user.id ?? '');
+              sl<SharedPrefs>()
+                  .setUser(authState?.session?.user.toJson() ?? {});
               sl<SharedPrefs>()
                   .setAccessToken(authState?.session?.accessToken ?? '');
               sl<SharedPrefs>()

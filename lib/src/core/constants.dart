@@ -20,6 +20,7 @@ class Consts {
   static const String kAddressKey = 'address';
   static const String kCityKey = 'city';
   static const String kStateKey = 'state';
+  static const String kCountryKey = 'country';
   static const String kPincodeKey = 'pincode';
   static const String kPhoneKey = 'phone';
   static const String kIsPhoneVerifiedKey = 'is_phone_verified';

@@ -23,11 +23,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   // Class Fields ================================
   bool _isLoading = false;
-  User? _me;
 
   // Getters ================================
   bool get isLaoding => _isLoading;
-  User? get me => _me;
   Session? get currentSession => sl<SupaAuthService>().currentSession;
 
   // Setter Functions ================================
@@ -53,8 +51,8 @@ class AuthenticationProvider extends ChangeNotifier {
     result.fold(
       (err) => onFailure?.call(err.toString()),
       (user) {
-        _me = user;
-        onSuccess?.call(_me?.id ?? '');
+        // _me = user;
+        onSuccess?.call(user.id);
       },
     );
     changeLoading(false);

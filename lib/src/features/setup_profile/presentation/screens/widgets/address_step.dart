@@ -1,5 +1,6 @@
 import 'package:chat_app/src/core/strings.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/providers/setup_profile_provider.dart';
+import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,6 +52,14 @@ class _AddressStepState extends State<AddressStep> {
     });
   }
 
+  String? dropdownValidator(String? val) {
+    if (val == null || val.isEmpty) {
+      return Strings.required;
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SetupProfileProvider>(context, listen: true);
@@ -73,83 +82,36 @@ class _AddressStepState extends State<AddressStep> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             30.verticalSpace,
+            SelectState(
+              onCountryChanged: (val) {
+                _validateForm();
+                provider.changeCountry(val);
+              },
+              onStateChanged: (val) {
+                _validateForm();
+                provider.changeState(val);
+              },
+              onCityChanged: (val) {
+                _validateForm();
+                provider.changeCity(val);
+              },
+              spacing: 20,
+              countryValidator: dropdownValidator,
+              stateValidator: dropdownValidator,
+              cityValidator: dropdownValidator,
+            ),
+            20.verticalSpace,
             TextFormField(
               controller: provider.addressController,
               focusNode: _addressNode,
               decoration: const InputDecoration(
                 labelText: Strings.address,
-                // hintText: 'Enter your address',
                 border: OutlineInputBorder(),
               ),
+              maxLines: 2,
               onTapOutside: (_) => FocusScope.of(context).unfocus(),
               onFieldSubmitted: (_) =>
                   FocusScope.of(context).requestFocus(_cityNode),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return Strings.required;
-                }
-                return null;
-              },
-            ),
-            20.verticalSpace,
-            DropdownButtonFormField<String>(
-              value: provider.city,
-              focusNode: _cityNode,
-              items: [
-                'Surat',
-                'Ahemdabad',
-                'Mumbai',
-                'Vadodara',
-                'Rajkot',
-                'Pune',
-                'Anand'
-              ]
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e.toLowerCase(),
-                      child: Text(e),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (val) {
-                provider.changeCity(val);
-                _validateForm();
-                FocusScope.of(context).requestFocus(_stateNode);
-              },
-              decoration: const InputDecoration(
-                labelText: Strings.city,
-                // hintText: 'Select your city',
-                border: OutlineInputBorder(),
-              ),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return Strings.required;
-                }
-                return null;
-              },
-            ),
-            20.verticalSpace,
-            DropdownButtonFormField<String>(
-              value: provider.state,
-              focusNode: _stateNode,
-              items: ['Gujrat', 'Maharashtra', 'Madhya Pradesh', 'Rajasthan']
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e.toLowerCase(),
-                      child: Text(e),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (val) {
-                provider.changeState(val);
-                _validateForm();
-                FocusScope.of(context).requestFocus(_pincodeNode);
-              },
-              decoration: const InputDecoration(
-                labelText: Strings.state,
-                // hintText: 'Select your state',
-                border: OutlineInputBorder(),
-              ),
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return Strings.required;

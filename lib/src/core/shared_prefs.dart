@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:chat_app/src/core/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SharedPrefs {
   SharedPrefs._();
@@ -10,7 +13,7 @@ class SharedPrefs {
 
   late final SharedPreferences _prefs;
 
-  final String _uidKey = "uid";
+  final String _userKey = "user";
   final String _accessTokenKey = "token";
   final String _refreshTokenKey = "refresh_token";
   final String _themeKey = "theme";
@@ -19,12 +22,17 @@ class SharedPrefs {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  /// UID ///
-  String? get uid => _prefs.getString(_uidKey);
+  /// User ///
 
-  Future<bool> setUID(String token) => _prefs.setString(_uidKey, token);
+  User? get user =>
+      User.fromJson(jsonDecode(_prefs.getString(_userKey) ?? '{}'));
 
-  Future<bool> removeUID() => _prefs.remove(_uidKey);
+  Future<bool> setUser(Map<String, dynamic> user) => _prefs.setString(
+        _userKey,
+        user.toString(),
+      );
+
+  Future<bool> removeUser() => _prefs.remove(_userKey);
 
   /// ACCESS TOKEN ///
   String? get accessToken => _prefs.getString(_accessTokenKey);

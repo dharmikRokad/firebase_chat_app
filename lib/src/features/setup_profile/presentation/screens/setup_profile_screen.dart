@@ -1,9 +1,8 @@
 import 'package:chat_app/src/chat_app_injector.dart';
 import 'package:chat_app/src/core/extensions/context_extensions.dart';
 import 'package:chat_app/src/core/extensions/object_extensions.dart';
-import 'package:chat_app/src/core/presentation/widgets/app_button.dart';
 import 'package:chat_app/src/core/routes/app_routes.dart';
-import 'package:chat_app/src/features/auth/presentation/providers/auth_provider.dart';
+import 'package:chat_app/src/core/shared_prefs.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/providers/setup_profile_provider.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/address_step.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/otp_step.dart';
@@ -11,7 +10,6 @@ import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/phone_step.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/profile_pic_step.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:wizard_stepper/wizard_stepper.dart';
@@ -37,8 +35,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       },
       onMovedToLastStep: () async {
         await context.read<SetupProfileProvider>().updateProfile(
-          sl<AuthenticationProvider>().me?.id ?? '',
-          sl<AuthenticationProvider>().me?.email ?? '',
+          sl<SharedPrefs>().user?.id ?? '',
+          sl<SharedPrefs>().user?.email ?? '',
           onSuccess: (_) {
             context.pushReplacementNamed(AppRoutes.profileCompleted.name);
             context.read<SetupProfileProvider>().resetValues();

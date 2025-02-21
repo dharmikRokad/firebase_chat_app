@@ -66,12 +66,12 @@ class _PhoneStepState extends State<PhoneStep> {
                   if (value == null || value.isEmpty) {
                     return Strings.required;
                   }
-                  if (provider.country.example.length != value.length) {
+                  if (provider.phoneCountry.example.length != value.length) {
                     return Strings.validPhoneNumber;
                   }
                   return null;
                 },
-                maxLength: provider.country.example.length,
+                maxLength: provider.phoneCountry.example.length,
                 controller: provider.phoneController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -96,14 +96,14 @@ class _PhoneStepState extends State<PhoneStep> {
                         countryListTheme: const CountryListThemeData(
                           bottomSheetHeight: 500,
                         ),
-                        onSelect: provider.changeCountry,
+                        onSelect: provider.changePhoneCountry,
                       );
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          provider.country.phoneCode,
+                          provider.phoneCountry.phoneCode,
                           style: Theme.of(context).appBarTheme.titleTextStyle,
                         ),
                         const Icon(Icons.arrow_drop_down)

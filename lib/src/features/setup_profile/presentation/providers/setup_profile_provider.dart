@@ -30,7 +30,8 @@ class SetupProfileProvider extends ChangeNotifier {
   String? _gender;
   String? _city;
   String? _state;
-  Country _country = CountryService().findByCode('IN')!;
+  String? _country;
+  Country _phoneCountry = CountryService().findByCode('IN')!;
 
   final TextEditingController fnameController = TextEditingController();
   final TextEditingController lNameController = TextEditingController();
@@ -49,8 +50,9 @@ class SetupProfileProvider extends ChangeNotifier {
 
   String? get city => _city;
   String? get state => _state;
-  Country get country => _country;
-  String get fullPhone => "+${country.phoneCode} ${phoneController.text}";
+  String? get country => _country;
+  Country get phoneCountry => _phoneCountry;
+  String get fullPhone => "+${phoneCountry.phoneCode} ${phoneController.text}";
 
   // Setter Functions ================================
   void changeLoading(bool newValue) {
@@ -83,8 +85,13 @@ class SetupProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeCountry(Country newVal) {
-    _country = newVal;
+  void changeCountry(String? value) {
+    _country = value;
+    notifyListeners();
+  }
+
+  void changePhoneCountry(Country newVal) {
+    _phoneCountry = newVal;
     notifyListeners();
   }
 
@@ -94,7 +101,7 @@ class SetupProfileProvider extends ChangeNotifier {
     _gender = null;
     _city = null;
     _state = null;
-    _country = CountryService().findByCode('IN')!;
+    _phoneCountry = CountryService().findByCode('IN')!;
     addressController.clear();
     pinController.clear();
     fnameController.clear();
@@ -132,7 +139,9 @@ class SetupProfileProvider extends ChangeNotifier {
 
     final result = await verifyOtpUsecase((fullPhone, otp));
 
-    if (!result) {
+    if (result) {
+      onSuccess?.call("OTP Verified.");
+    } else {
       onFailure?.call('Enter valid OTP.');
     }
 
@@ -149,7 +158,7 @@ class SetupProfileProvider extends ChangeNotifier {
 
     final profilePicUrl = await sl<SupaStorageService>().uploadProfilePic(
       file: File(profilePic?.path ?? ''),
-      path: '${Consts.kProfilePicsFolder}/${sl<SharedPrefs>().uid}',
+      path: '${Consts.kProfilePicsFolder}/${sl<SharedPrefs>().user?.id}',
       accessToken: sl<SharedPrefs>().accessToken ?? '',
     );
 
@@ -173,6 +182,7 @@ class SetupProfileProvider extends ChangeNotifier {
             Consts.kAddressKey: addressController.text,
             Consts.kCityKey: city,
             Consts.kStateKey: state,
+            Consts.kCountryKey: country,
             Consts.kPincodeKey: pinController.text,
           },
         },

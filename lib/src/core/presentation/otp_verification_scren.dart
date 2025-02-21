@@ -55,6 +55,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               Form(
                   key: widget.formKey,
                   child: Pinput(
+                    controller: widget.otpController,
+                    onCompleted: log,
                     defaultPinTheme: context.pinTheme,
                     length: 6,
                     hapticFeedbackType: HapticFeedbackType.mediumImpact,
@@ -64,8 +66,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       }
                       return null;
                     },
-                    controller: widget.otpController,
-                    onCompleted: log,
                   )),
               20.verticalSpace,
               Row(
