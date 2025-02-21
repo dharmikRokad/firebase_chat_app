@@ -148,9 +148,7 @@ class SetupProfileProvider extends ChangeNotifier {
     changeLoading(false);
   }
 
-  Future<void> updateProfile(
-    String uid,
-    String email, {
+  Future<void> updateProfile({
     Function(String)? onSuccess,
     Function(String)? onFailure,
   }) async {
@@ -166,8 +164,8 @@ class SetupProfileProvider extends ChangeNotifier {
 
     final result = await updateProfileUseCase(
       UpdateProfileParams(
-        uid: uid,
-        email: email,
+        uid: sl<SharedPrefs>().user?.id ?? '',
+        email: sl<SharedPrefs>().user?.email ?? '',
         data: {
           Consts.kFNameKey: fnameController.text,
           Consts.kLNameKey: lNameController.text,
@@ -182,7 +180,7 @@ class SetupProfileProvider extends ChangeNotifier {
             Consts.kAddressKey: addressController.text,
             Consts.kCityKey: city,
             Consts.kStateKey: state,
-            Consts.kCountryKey: country,
+            Consts.kCountryKey: country?.split('\t').last,
             Consts.kPincodeKey: pinController.text,
           },
         },

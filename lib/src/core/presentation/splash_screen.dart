@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:chat_app/src/features/auth/presentation/providers/auth_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -55,7 +56,6 @@ class _SplashScreenState extends State<SplashScreen> {
           (authState) async {
             if (authState?.session == null) {
               log('not any logged in user.');
-              if (!mounted) return;
 
               sl<SharedPrefs>().removeUser();
               sl<SharedPrefs>().removeAccessToken();
@@ -64,14 +64,13 @@ class _SplashScreenState extends State<SplashScreen> {
               context.goNamed(AppRoutes.loginPage.name);
             } else {
               log('found the logged in user - ${authState?.session?.user.email}');
-              if (!mounted) return;
 
-              sl<SharedPrefs>()
-                  .setUser(authState?.session?.user.toJson() ?? {});
               sl<SharedPrefs>()
                   .setAccessToken(authState?.session?.accessToken ?? '');
               sl<SharedPrefs>()
                   .setRefreshToken(authState?.session?.refreshToken ?? '');
+              sl<SharedPrefs>()
+                  .setUser(authState?.session?.user.toJson() ?? {});
 
               context.goNamed(
                 await context

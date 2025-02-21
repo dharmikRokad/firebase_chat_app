@@ -22,7 +22,7 @@ class ImagesAppAsset extends AppAsset {
   @override
   String get path => '${super.path}/images';
 
-  String get attechment => '$path/attechment.png';
+  String get attechment => '$path/attachment.png';
   String get audioCcall => '$path/audio_call.png';
   String get back => '$path/back.png';
   String get bell => '$path/bell.png';

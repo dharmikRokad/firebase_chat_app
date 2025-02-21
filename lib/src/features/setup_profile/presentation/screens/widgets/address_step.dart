@@ -64,12 +64,12 @@ class _AddressStepState extends State<AddressStep> {
   Widget build(BuildContext context) {
     provider = Provider.of<SetupProfileProvider>(context, listen: true);
 
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return SizedBox(
+      height: double.infinity,
+      child: Form(
+        key: _formKey,
+        child: ListView(
+        padding: const EdgeInsets.only(left: 10, top: 5),
           children: [
             Text(
               Strings.addressStepHeading,
@@ -108,6 +108,7 @@ class _AddressStepState extends State<AddressStep> {
                 labelText: Strings.address,
                 border: OutlineInputBorder(),
               ),
+              minLines: 1,
               maxLines: 2,
               onTapOutside: (_) => FocusScope.of(context).unfocus(),
               onFieldSubmitted: (_) =>
@@ -139,7 +140,7 @@ class _AddressStepState extends State<AddressStep> {
                 if (val == null || val.isEmpty) {
                   return Strings.required;
                 }
-
+        
                 if (val.length < 6) {
                   return Strings.validPincode;
                 }

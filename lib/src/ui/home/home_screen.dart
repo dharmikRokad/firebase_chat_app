@@ -12,6 +12,7 @@ import 'package:chat_app/src/core/presentation/widgets/app_icon_button.dart';
 import 'package:chat_app/src/core/presentation/widgets/custom_scaffold.dart';
 import 'package:chat_app/src/core/presentation/widgets/profile_pic_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -30,11 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
       leading: AppIconButton(iconPath: ImagesAppAsset().search),
       actions: [
         const ProfilePic(url: "https://avatar.iran.liara.run/public/24"),
+        10.horizontalSpace,
         AppIconButton(
           iconPath: ImagesAppAsset().attechment,
           onPressed: () {
             context.read<AuthenticationProvider>().signOut(
-                  onSuccess: context.showSuccess,
+                  onSuccess: (msg) {
+                    context.showSuccess(msg);
+                    context.goNamed(AppRoutes.loginPage.name);
+                  },
+                  onFailure: context.showError,
                 );
           },
         ),

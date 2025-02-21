@@ -29,7 +29,7 @@ class SharedPrefs {
 
   Future<bool> setUser(Map<String, dynamic> user) => _prefs.setString(
         _userKey,
-        user.toString(),
+        jsonEncode(user),
       );
 
   Future<bool> removeUser() => _prefs.remove(_userKey);

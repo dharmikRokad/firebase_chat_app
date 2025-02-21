@@ -1,6 +1,4 @@
-import 'package:chat_app/src/core/app_assets.dart';
 import 'package:chat_app/src/core/themes/app_colors.dart';
-import 'package:chat_app/src/core/presentation/widgets/app_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

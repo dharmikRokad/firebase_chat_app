@@ -26,7 +26,6 @@ class AuthenticationProvider extends ChangeNotifier {
 
   // Getters ================================
   bool get isLaoding => _isLoading;
-  Session? get currentSession => sl<SupaAuthService>().currentSession;
 
   // Setter Functions ================================
   void changeLoading(bool newValue) {

@@ -47,38 +47,41 @@ class _PersonalInfoStepState extends State<PersonalInfoStep> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SetupProfileProvider>(context);
-    return Form(
-      key: _formKey,
-      child: ListView(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        shrinkWrap: true,
-        padding: const EdgeInsets.only(left: 10),
-        children: [
-          5.verticalSpace,
-          Text(
-            Strings.setupProfile,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall
-                ?.apply(fontWeightDelta: 2),
-          ),
-          10.h.verticalSpace,
-          Text(
-            Strings.personalInfoStepSubheading,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          40.h.verticalSpace,
-          _buildInputNameWidget(),
-          20.h.verticalSpace,
-          _buildInputUsernameWidget(),
-          20.h.verticalSpace,
-          _buildInputProfessionWidget(),
-          20.h.verticalSpace,
-          _buildGenderSelectionWidget(),
-          20.h.verticalSpace,
-          _buildBirthDateSelectionwidget(),
-          30.h.verticalSpace,
-        ],
+    return SizedBox(
+      height: double.infinity,
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(left: 10, top: 5),
+          children: [
+            5.verticalSpace,
+            Text(
+              Strings.setupProfile,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.apply(fontWeightDelta: 2),
+            ),
+            10.h.verticalSpace,
+            Text(
+              Strings.personalInfoStepSubheading,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            40.h.verticalSpace,
+            _buildInputNameWidget(),
+            20.h.verticalSpace,
+            _buildInputUsernameWidget(),
+            20.h.verticalSpace,
+            _buildInputProfessionWidget(),
+            20.h.verticalSpace,
+            _buildGenderSelectionWidget(),
+            20.h.verticalSpace,
+            _buildBirthDateSelectionwidget(),
+            30.h.verticalSpace,
+          ],
+        ),
       ),
     );
   }

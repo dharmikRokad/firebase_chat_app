@@ -25,15 +25,20 @@ class SupaAuthService {
   }
 
   Future<AuthResponse> verifyOtp(String phone, String otp) async {
-    final res = await _supabaseAuth.verifyOTP(phone: phone, token: otp, type: OtpType.sms);
+    final res = await _supabaseAuth.verifyOTP(
+      phone: phone,
+      token: otp,
+      type: OtpType.sms,
+    );
+
+    await _supabaseAuth.updateUser(UserAttributes(phone: phone));
+
     return res;
   }
 
   Stream<AuthState?> authStateChanges() => _supabaseAuth.onAuthStateChange;
 
   Future<void> signOut() async => await _supabaseAuth.signOut();
-
-  User? get getCurrentUser => _supabaseAuth.currentUser;
 
   Session? get currentSession => _supabaseAuth.currentSession;
 }

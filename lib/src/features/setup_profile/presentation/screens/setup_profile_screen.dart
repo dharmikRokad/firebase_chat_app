@@ -5,7 +5,6 @@ import 'package:chat_app/src/core/routes/app_routes.dart';
 import 'package:chat_app/src/core/shared_prefs.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/providers/setup_profile_provider.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/address_step.dart';
-import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/otp_step.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/personal_info_step.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/phone_step.dart';
 import 'package:chat_app/src/features/setup_profile/presentation/screens/widgets/profile_pic_step.dart';
@@ -30,42 +29,19 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
 
     _stepperController = WizardStepperController(
       showNavigationButtons: true,
-      onSelectedStep: (step) {
-        log("current step == $step");
-      },
       onMovedToLastStep: () async {
+        log("access token => ${sl<SharedPrefs>().accessToken}");
         await context.read<SetupProfileProvider>().updateProfile(
-          sl<SharedPrefs>().user?.id ?? '',
-          sl<SharedPrefs>().user?.email ?? '',
-          onSuccess: (_) {
-            context.pushReplacementNamed(AppRoutes.profileCompleted.name);
-            context.read<SetupProfileProvider>().resetValues();
-          },
-          onFailure: context.showError,
-        );
-      },
-      onStepCompleted: (index, isCompleted) {
-        log("step $index is completed == $isCompleted");
+              onSuccess: (_) {
+                context.pushReplacementNamed(AppRoutes.profileCompleted.name);
+                context.read<SetupProfileProvider>().resetValues();
+              },
+              onFailure: context.showError,
+            );
       },
       orientation: WizardStepperOrientation.vertical,
       position: WizardStepperPosition.left,
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _addListner();
-    });
-  }
-
-  _addListner() {
-    _stepperController.stepChanges.listen((event) {
-      for (WizardStepperMetadata data in event.steps) {
-        log(data.toString());
-      }
-
-      if (event.steps[3].isComplete && event.steps[4].isCurrentStep) {
-        if (!mounted) return;
-        context.read<SetupProfileProvider>().sendOtp();
-      }
-    });
   }
 
   @override
@@ -81,7 +57,6 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               PersonalInfoStep(),
               AddressStep(),
               PhoneStep(),
-              OtpStep(),
             ],
           ),
         ),
